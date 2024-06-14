@@ -424,7 +424,20 @@
     <ClCompile Include="GodbloxEngine.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="GodbloxEngine.fx" />
+    <None Include="GodbloxEngine.fx">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">
+      </ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">
+      </ExcludedFromBuild>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <CLInclude Include="resource.h" />
