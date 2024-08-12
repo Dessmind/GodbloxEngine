@@ -423,6 +423,7 @@
   <ItemGroup>
     <ClCompile Include="GodbloxEngine.cpp" />
     <ClCompile Include="source\BaseApp.cpp" />
+    <ClCompile Include="source\DepthStencilView.cpp" />
     <ClCompile Include="source\Device.cpp" />
     <ClCompile Include="source\DeviceContext.cpp" />
     <ClCompile Include="source\SwapChain.cpp" />
@@ -447,6 +448,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\BaseApp.h" />
+    <ClInclude Include="include\DepthStencilView.h" />
     <ClInclude Include="include\Device.h" />
     <ClInclude Include="include\DeviceContext.h" />
     <ClInclude Include="include\Prerequisitos.h" />
