@@ -425,6 +425,8 @@
     <ClCompile Include="source\BaseApp.cpp" />
     <ClCompile Include="source\Device.cpp" />
     <ClCompile Include="source\DeviceContext.cpp" />
+    <ClCompile Include="source\SwapChain.cpp" />
+    <ClCompile Include="source\Texture.cpp" />
     <ClCompile Include="source\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -450,6 +452,7 @@
     <ClInclude Include="include\Prerequisitos.h" />
     <ClInclude Include="include\Resource.h" />
     <ClInclude Include="include\SwapChain.h" />
+    <ClInclude Include="include\Texture.h" />
     <ClInclude Include="include\Window.h" />
     <CLInclude Include="resource.h" />
     <ResourceCompile Include="GodbloxEngine.rc" />
