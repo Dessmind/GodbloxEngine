@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Prerequisitos.h"
 #include "InputLayout.h"
 
@@ -15,7 +14,7 @@ public:
 	void 
 	init(Device device, 
 			 std::string fileName, 
-		 	 std::vector<D3D11_INPUT_ELEMENT_DESC> Layout);
+			 std::vector<D3D11_INPUT_ELEMENT_DESC> Layout);
 
 	void 
 	update();
@@ -32,15 +31,11 @@ public:
 												LPCSTR szShaderModel, 
 												ID3DBlob** ppBlobOut);
 
-	void
-	CreateVertexShader(Device device);
-	
 	void 
 	CreateInputLayout(Device device, std::vector<D3D11_INPUT_ELEMENT_DESC> Layout);
 
-	void CreatePixelShader(Device device);
-
-	void CreateShader(Device device, void* shaderClass);
+	void 
+	CreateShader(Device device, ShaderType type);
 
 public:
 	ID3D11VertexShader* m_VertexShader = nullptr;

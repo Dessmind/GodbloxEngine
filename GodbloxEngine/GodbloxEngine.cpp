@@ -15,6 +15,7 @@
 #include "RenderTargetView.h"
 #include "Viewport.h"
 #include "InputLayout.h"
+#include "ShaderProgram.h"
 
 
 
@@ -32,10 +33,11 @@ DepthStencilView                    g_depthStencilView;
 RenderTargetView                    g_renderTargetView;
 Viewport                            g_viewport;
 InputLayout                         g_inputLayout;
+ShaderProgram                       g_shaderProgram;
 
 //ID3D11RenderTargetView*             g_pRenderTargetView = NULL;
-ID3D11VertexShader*                 g_pVertexShader = NULL;
-ID3D11PixelShader*                  g_pPixelShader = NULL;
+//ID3D11VertexShader*                 g_pVertexShader = NULL;
+//ID3D11PixelShader*                  g_pPixelShader = NULL;
 //ID3D11InputLayout*                  g_pVertexLayout = NULL;
 ID3D11Buffer*                       g_pVertexBuffer = NULL;
 ID3D11Buffer*                       g_pIndexBuffer = NULL;
@@ -100,39 +102,7 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
 
 
 //--------------------------------------------------------------------------------------
-// Helper for compiling shaders with D3DX11
-//--------------------------------------------------------------------------------------
-HRESULT CompileShaderFromFile( char* szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel, ID3DBlob** ppBlobOut )
-{
-    HRESULT hr = S_OK;
-
-    DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
-#if defined( DEBUG ) || defined( _DEBUG )
-    // Set the D3DCOMPILE_DEBUG flag to embed debug information in the shaders.
-    // Setting this flag improves the shader debugging experience, but still allows 
-    // the shaders to be optimized and to run exactly the way they will run in 
-    // the release configuration of this program.
-    dwShaderFlags |= D3DCOMPILE_DEBUG;
-#endif
-
-    ID3DBlob* pErrorBlob;
-    hr = D3DX11CompileFromFile( szFileName, NULL, NULL, szEntryPoint, szShaderModel, 
-        dwShaderFlags, 0, NULL, ppBlobOut, &pErrorBlob, NULL );
-    if( FAILED(hr) )
-    {
-        if( pErrorBlob != NULL )
-            OutputDebugStringA( (char*)pErrorBlob->GetBufferPointer() );
-        if( pErrorBlob ) pErrorBlob->Release();
-        return hr;
-    }
-    if( pErrorBlob ) pErrorBlob->Release();
-
-    return S_OK;
-}
-
-
-//--------------------------------------------------------------------------------------
-// Create Direct3D device and swap chain
+//  Create Direct3D device and swap chain
 //--------------------------------------------------------------------------------------
 HRESULT InitDevice()
 {
@@ -159,29 +129,6 @@ HRESULT InitDevice()
     // Setup the viewport
     g_viewport.init(g_window);
 
-    // Compile the vertex shader
-    ID3DBlob* pVSBlob = NULL;
-    hr = CompileShaderFromFile( "GodbloxEngine.fx", "VS", "vs_4_0", &pVSBlob );
-    if( FAILED( hr ) )
-    {
-        MessageBox( NULL,
-                    "The FX file cannot be compiled.  Please run this executable from the directory that contains the FX file.", "Error", MB_OK );
-        return hr;
-    }
-
-    // Create the vertex shader
-    //hr = g_device.m_device->CreateVertexShader( pVSBlob->GetBufferPointer(), pVSBlob->GetBufferSize(), NULL, &g_pVertexShader );
-    hr = g_device.CreateVertexShader( pVSBlob->GetBufferPointer(), 
-                                      pVSBlob->GetBufferSize(), 
-                                      nullptr, 
-                                      &g_pVertexShader );
-    
-    if(FAILED( hr ))
-    {    
-        pVSBlob->Release();
-        return hr;
-    }
-
     // Define the input layout
     std::vector<D3D11_INPUT_ELEMENT_DESC> Layout;
 
@@ -205,29 +152,31 @@ HRESULT InitDevice()
     texcoord.InstanceDataStepRate = 0;
     Layout.push_back(texcoord);
 
-    g_inputLayout.init(g_device, Layout, pVSBlob);
-    
-    pVSBlob->Release();
+    g_shaderProgram.init(g_device, "GodbloxEngine.fx", Layout);
+
+    //g_inputLayout.init(g_device, Layout, pVSBlob);
+    //
+    //pVSBlob->Release();
 
     // Compile the pixel shader
-    ID3DBlob* pPSBlob = NULL;
-    hr = CompileShaderFromFile( "GodbloxEngine.fx", "PS", "ps_4_0", &pPSBlob );
-    if( FAILED( hr ) )
-    {
-        MessageBox( NULL,
-                    "The FX file cannot be compiled.  Please run this executable from the directory that contains the FX file.", "Error", MB_OK );
-        return hr;
-    }
+    //ID3DBlob* pPSBlob = NULL;
+    //hr = CompileShaderFromFile( "GodbloxEngine.fx", "PS", "ps_4_0", &pPSBlob );
+    //if( FAILED( hr ) )
+    //{
+    //    MessageBox( NULL,
+    //                "The FX file cannot be compiled.  Please run this executable from the directory that contains the FX file.", "Error", MB_OK );
+    //    return hr;
+    //}
 
-    // Create the pixel shader
-    //hr = g_device.m_device->CreatePixelShader( pPSBlob->GetBufferPointer(), pPSBlob->GetBufferSize(), NULL, &g_pPixelShader );
-    hr = g_device.CreatePixelShader(pPSBlob->GetBufferPointer(),
-                                    pPSBlob->GetBufferSize(),
-                                    nullptr, &g_pPixelShader);
-    
-    pPSBlob->Release();
-    if( FAILED( hr ) )
-        return hr;
+    //// Create the pixel shader
+    ////hr = g_device.m_device->CreatePixelShader( pPSBlob->GetBufferPointer(), pPSBlob->GetBufferSize(), NULL, &g_pPixelShader );
+    //hr = g_device.CreatePixelShader(pPSBlob->GetBufferPointer(),
+    //                                pPSBlob->GetBufferSize(),
+    //                                nullptr, &g_pPixelShader);
+    //
+    //pPSBlob->Release();
+    //if( FAILED( hr ) )
+    //    return hr;
 
     // Create vertex buffer
     SimpleVertex vertices[] =
@@ -273,10 +222,10 @@ HRESULT InitDevice()
     ZeroMemory( &InitData, sizeof(InitData) );
     InitData.pSysMem = vertices;
     
-    
+
     //hr = g_device.m_device->CreateBuffer( &bd, &InitData, &g_pVertexBuffer );
     hr = g_device.CreateBuffer( &bd, &InitData, &g_pVertexBuffer );
-    
+
 
     if( FAILED( hr ) )
         return hr;
@@ -423,9 +372,10 @@ void CleanupDevice()
     if( g_pVertexBuffer ) g_pVertexBuffer->Release();
     if( g_pIndexBuffer ) g_pIndexBuffer->Release();
     //if( g_pVertexLayout ) g_pVertexLayout->Release();
-    g_inputLayout.destroy();
-    if( g_pVertexShader ) g_pVertexShader->Release();
-    if( g_pPixelShader ) g_pPixelShader->Release();
+    //g_inputLayout.destroy();
+    //if( g_pVertexShader ) g_pVertexShader->Release();
+    //if( g_pPixelShader ) g_pPixelShader->Release();
+    g_shaderProgram.destroy();
     //if( g_pDepthStencil ) g_pDepthStencil->Release();
     g_depthStencil.destroy();
     //if( g_pDepthStencilView ) g_pDepthStencilView->Release();
@@ -519,12 +469,14 @@ void Render()
     //
     // Render the cube
     //
-    g_inputLayout.render(g_deviceContext);
-    g_deviceContext.m_deviceContext->VSSetShader( g_pVertexShader, NULL, 0 );
+    //g_inputLayout.render(g_deviceContext);
+    //g_deviceContext.m_deviceContext->VSSetShader( g_pVertexShader, NULL, 0 );
+    //g_deviceContext.m_deviceContext->PSSetShader( g_pPixelShader, NULL, 0 );
+    g_shaderProgram.render(g_deviceContext);
     g_deviceContext.m_deviceContext->VSSetConstantBuffers( 0, 1, &g_pCBNeverChanges );
     g_deviceContext.m_deviceContext->VSSetConstantBuffers( 1, 1, &g_pCBChangeOnResize );
     g_deviceContext.m_deviceContext->VSSetConstantBuffers( 2, 1, &g_pCBChangesEveryFrame );
-    g_deviceContext.m_deviceContext->PSSetShader( g_pPixelShader, NULL, 0 );
+    
     g_deviceContext.m_deviceContext->PSSetConstantBuffers( 2, 1, &g_pCBChangesEveryFrame );
     g_deviceContext.m_deviceContext->PSSetShaderResources( 0, 1, &g_pTextureRV );
     g_deviceContext.m_deviceContext->PSSetSamplers( 0, 1, &g_pSamplerLinear );
