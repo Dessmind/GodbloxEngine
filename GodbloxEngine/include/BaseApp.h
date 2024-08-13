@@ -8,15 +8,20 @@ public:
 	BaseApp() = default;
 	~BaseApp() {};
 
-	HRESULT init();
+	HRESULT 
+	init();
 
-	void update();
+	void 
+	update();
 
-	void render();
+	void 
+	render();
 
-	void destroy();
+	void 
+	destroy();
 
-	int run( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow );
+	int 
+	run( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow );
 
 	LRESULT CALLBACK  WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 

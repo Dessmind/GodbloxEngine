@@ -7,13 +7,17 @@ public:
 	Window() = default;
 	~Window() = default;
 
-	HRESULT init(HINSTANCE hInstance, int nCmdShow, WNDPROC windproc);
+	HRESULT
+	init(HINSTANCE hInstance, int nCmdShow, WNDPROC windproc);
 
-	void update();
+	void 
+	update();
 
-	void render();
+	void 
+	render();
 
-	void destroy();
+	void 
+	destroy();
 
 public:
 	HWND m_hWnd = nullptr;

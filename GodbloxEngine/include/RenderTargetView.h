@@ -9,16 +9,16 @@ public:
 	~RenderTargetView() = default;
 
 	void
-		init(Device device, Texture backBuffer, DXGI_FORMAT Format);
+	init(Device device, Texture backBuffer, DXGI_FORMAT Format);
 
 	void
-		update();
+	update();
 
 	void
-		render(DeviceContext& deviceContext,
-			DepthStencilView& depthStencilView,
-			unsigned int numViews,
-			float ClearColor[4]);
+	render(DeviceContext& deviceContext,
+					DepthStencilView& depthStencilView,
+					unsigned int numViews,
+					float ClearColor[4]);
 
 	void destroy();
 public:

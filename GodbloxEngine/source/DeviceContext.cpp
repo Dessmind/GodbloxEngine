@@ -63,8 +63,8 @@ DeviceContext::IASetInputLayout(ID3D11InputLayout* pInputLayout) {
 
 void 
 DeviceContext::VSSetShader(ID3D11VertexShader* pVertexShader, 
-						   ID3D11ClassInstance* const* ppClassInstances, 
-						   unsigned int NumClassInstances) {
+ID3D11ClassInstance* const* ppClassInstances, 
+unsigned int NumClassInstances) {
 	// Verifica si el shader de vértices no es nulo; si lo es, muestra un error 
 	// y termina.
 	if (pVertexShader == nullptr)

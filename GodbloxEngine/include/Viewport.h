@@ -8,16 +8,20 @@ class
     Viewport
 {
 public:
-    Viewport() = default;
-    ~Viewport() = default;
+  Viewport() = default;
+  ~Viewport() = default;
 
-    void init(Window window);
+  void 
+  init(Window window);
 
-    void update();
+  void 
+  update();
 
-    void render(DeviceContext& deviceContext);
+  void 
+  render(DeviceContext& deviceContext);
 
-    void destroy();
+  void 
+  destroy();
 
 
 public:

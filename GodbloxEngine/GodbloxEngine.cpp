@@ -196,13 +196,13 @@ HRESULT InitDevice()
     Layout.push_back(position);
 
     D3D11_INPUT_ELEMENT_DESC texcoord;
-    position.SemanticName = "TEXCOORD";
-    position.SemanticIndex = 0;
-    position.Format = DXGI_FORMAT_R32G32_FLOAT;
-    position.InputSlot = 0;
-    position.AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT /*12*/;
-    position.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-    position.InstanceDataStepRate = 0;
+    texcoord.SemanticName = "TEXCOORD";
+    texcoord.SemanticIndex = 0;
+    texcoord.Format = DXGI_FORMAT_R32G32_FLOAT;
+    texcoord.InputSlot = 0;
+    texcoord.AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT /*12*/;
+    texcoord.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+    texcoord.InstanceDataStepRate = 0;
     Layout.push_back(texcoord);
 
     g_inputLayout.init(g_device, Layout, pVSBlob);
