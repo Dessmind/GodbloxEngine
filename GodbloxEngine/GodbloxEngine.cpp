@@ -14,6 +14,7 @@
 #include "DepthStencilView.h"
 #include "RenderTargetView.h"
 #include "Viewport.h"
+#include "InputLayout.h"
 
 
 
@@ -30,13 +31,12 @@ Texture                             g_depthStencil;
 DepthStencilView                    g_depthStencilView;
 RenderTargetView                    g_renderTargetView;
 Viewport                            g_viewport;
+InputLayout                         g_inputLayout;
 
-ID3D11RenderTargetView*             g_pRenderTargetView = NULL;
-//ID3D11Texture2D*                    g_pDepthStencil = NULL;
-//ID3D11DepthStencilView*             g_pDepthStencilView = NULL;
+//ID3D11RenderTargetView*             g_pRenderTargetView = NULL;
 ID3D11VertexShader*                 g_pVertexShader = NULL;
 ID3D11PixelShader*                  g_pPixelShader = NULL;
-ID3D11InputLayout*                  g_pVertexLayout = NULL;
+//ID3D11InputLayout*                  g_pVertexLayout = NULL;
 ID3D11Buffer*                       g_pVertexBuffer = NULL;
 ID3D11Buffer*                       g_pIndexBuffer = NULL;
 ID3D11Buffer*                       g_pCBNeverChanges = NULL;
@@ -159,15 +159,6 @@ HRESULT InitDevice()
     // Setup the viewport
     g_viewport.init(g_window);
 
-    //D3D11_VIEWPORT vp;
-    //vp.Width = (FLOAT)g_window.m_width;
-    //vp.Height = (FLOAT)g_window.m_height;
-    //vp.MinDepth = 0.0f;
-    //vp.MaxDepth = 1.0f;
-    //vp.TopLeftX = 0;
-    //vp.TopLeftY = 0;
-    //g_deviceContext.m_deviceContext->RSSetViewports( 1, &vp );
-
     // Compile the vertex shader
     ID3DBlob* pVSBlob = NULL;
     hr = CompileShaderFromFile( "GodbloxEngine.fx", "VS", "vs_4_0", &pVSBlob );
@@ -192,30 +183,31 @@ HRESULT InitDevice()
     }
 
     // Define the input layout
-    D3D11_INPUT_ELEMENT_DESC layout[] =
-    {
-        { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-        { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-    };
-    UINT numElements = ARRAYSIZE( layout );
+    std::vector<D3D11_INPUT_ELEMENT_DESC> Layout;
 
-    // Create the input layout
-    //hr = g_device.m_device->CreateInputLayout( layout, numElements, pVSBlob->GetBufferPointer(),
-    //                                     pVSBlob->GetBufferSize(), &g_pVertexLayout );
-   
-    hr = g_device.CreateInputLayout(layout, numElements, pVSBlob->GetBufferPointer(),
-                                         pVSBlob->GetBufferSize(), &g_pVertexLayout);
+    D3D11_INPUT_ELEMENT_DESC position;
+    position.SemanticName = "POSITION";
+    position.SemanticIndex = 0;
+    position.Format = DXGI_FORMAT_R32G32B32_FLOAT;
+    position.InputSlot = 0;
+    position.AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT /*12*/;
+    position.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+    position.InstanceDataStepRate = 0;
+    Layout.push_back(position);
 
+    D3D11_INPUT_ELEMENT_DESC texcoord;
+    position.SemanticName = "TEXCOORD";
+    position.SemanticIndex = 0;
+    position.Format = DXGI_FORMAT_R32G32_FLOAT;
+    position.InputSlot = 0;
+    position.AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT /*12*/;
+    position.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+    position.InstanceDataStepRate = 0;
+    Layout.push_back(texcoord);
 
-
-
+    g_inputLayout.init(g_device, Layout, pVSBlob);
+    
     pVSBlob->Release();
-
-    if( FAILED( hr ) )
-        return hr;
-
-    // Set the input layout
-    g_deviceContext.m_deviceContext->IASetInputLayout( g_pVertexLayout );
 
     // Compile the pixel shader
     ID3DBlob* pPSBlob = NULL;
@@ -229,11 +221,9 @@ HRESULT InitDevice()
 
     // Create the pixel shader
     //hr = g_device.m_device->CreatePixelShader( pPSBlob->GetBufferPointer(), pPSBlob->GetBufferSize(), NULL, &g_pPixelShader );
-    
     hr = g_device.CreatePixelShader(pPSBlob->GetBufferPointer(),
                                     pPSBlob->GetBufferSize(),
                                     nullptr, &g_pPixelShader);
-    
     
     pPSBlob->Release();
     if( FAILED( hr ) )
@@ -432,7 +422,8 @@ void CleanupDevice()
     if( g_pCBChangesEveryFrame ) g_pCBChangesEveryFrame->Release();
     if( g_pVertexBuffer ) g_pVertexBuffer->Release();
     if( g_pIndexBuffer ) g_pIndexBuffer->Release();
-    if( g_pVertexLayout ) g_pVertexLayout->Release();
+    //if( g_pVertexLayout ) g_pVertexLayout->Release();
+    g_inputLayout.destroy();
     if( g_pVertexShader ) g_pVertexShader->Release();
     if( g_pPixelShader ) g_pPixelShader->Release();
     //if( g_pDepthStencil ) g_pDepthStencil->Release();
@@ -528,6 +519,7 @@ void Render()
     //
     // Render the cube
     //
+    g_inputLayout.render(g_deviceContext);
     g_deviceContext.m_deviceContext->VSSetShader( g_pVertexShader, NULL, 0 );
     g_deviceContext.m_deviceContext->VSSetConstantBuffers( 0, 1, &g_pCBNeverChanges );
     g_deviceContext.m_deviceContext->VSSetConstantBuffers( 1, 1, &g_pCBChangeOnResize );

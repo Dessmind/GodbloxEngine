@@ -225,6 +225,8 @@ HRESULT Device::CreatePixelShader(const void* pShaderBytecode,
 
 		MESSAGE("Device", "CreatePixelShader", "OK")
 	}
+
+	
 	return hr;
 }
 

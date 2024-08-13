@@ -45,7 +45,13 @@
     <ClCompile Include="source\RenderTargetView.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="include\Viewport.cpp">
+    <ClCompile Include="source\InputLayout.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ShaderProgram.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Viewport.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
@@ -89,6 +95,12 @@
       <Filter>Include</Filter>
     </ClInclude>
     <ClInclude Include="include\RenderTargetView.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\InputLayout.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ShaderProgram.h">
       <Filter>Include</Filter>
     </ClInclude>
     <ClInclude Include="include\Viewport.h">

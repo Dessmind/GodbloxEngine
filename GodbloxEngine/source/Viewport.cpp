@@ -2,13 +2,13 @@
 #include "Window.h"
 #include "DeviceContext.h"
 
-void 
+void
 Viewport::init(Window window)
 {
     if (window.m_hWnd == nullptr)
     {
         ERROR("Viewport", "init", "CHECK FOR Window window")
-        exit(1);
+            exit(1);
     }
     m_viewport.Width = (float)window.m_width;
     m_viewport.Height = (float)window.m_height;
@@ -18,12 +18,12 @@ Viewport::init(Window window)
     m_viewport.TopLeftY = 0;
 }
 
-void 
+void
 Viewport::update()
 {
 }
 
-void 
+void
 Viewport::render(DeviceContext& deviceContext)
 {
     deviceContext.RSSetViewports(1, &m_viewport);

@@ -4,8 +4,8 @@
 class Window;
 class DeviceContext;
 
-class 
-Viewport
+class
+    Viewport
 {
 public:
     Viewport() = default;

@@ -1,17 +1,17 @@
 #include "DeviceContext.h"
 
-void DeviceContext::destroy()
-{
+void 
+DeviceContext::destroy() {
 	// SAFE_RELEASE es una macro que libera el recurso y lo pone en nullptr para 
 	// evitar errores.
 	SAFE_RELEASE(m_deviceContext);
 }
 
 
-void DeviceContext::PSSetShaderResources(unsigned int StartSlot, 
-											unsigned int NumViews, 
-											ID3D11ShaderResourceView* const* ppShaderResourceViews)
-{
+void 
+DeviceContext::PSSetShaderResources(unsigned int StartSlot, 
+									unsigned int NumViews, 
+									ID3D11ShaderResourceView* const* ppShaderResourceViews) {
 	// Verifica si las vistas de recursos del shader no son nulas; si lo son, 
 	// muestra un error y termina.
 	if (ppShaderResourceViews == nullptr)
@@ -27,8 +27,9 @@ void DeviceContext::PSSetShaderResources(unsigned int StartSlot,
 }
 
 
-void DeviceContext::RSSetViewports(unsigned int NumViewports, const D3D11_VIEWPORT* pViewports)
-{
+void 
+DeviceContext::RSSetViewports(unsigned int NumViewports, 
+							  const D3D11_VIEWPORT* pViewports) {
 	// Verifica si los viewports no son nulos; si lo son, muestra un error y termina.
 	if (pViewports == nullptr)
 	{
@@ -43,14 +44,14 @@ void DeviceContext::RSSetViewports(unsigned int NumViewports, const D3D11_VIEWPO
 }
 
 
-void DeviceContext::IASetInputLayout(ID3D11InputLayout* pInputLayout)
-{
+void 
+DeviceContext::IASetInputLayout(ID3D11InputLayout* pInputLayout) {
 	// Verifica si el layout de entrada no es nulo; si lo es, muestra un error 
 	// y termina.
 	if (pInputLayout == nullptr)
 	{
 		ERROR("DeviceContext", "IASetLayout", "CHECK FOR ID3D11InputLayout* pInputLayout")
-			exit(1);
+		exit(1);
 	}
 	else
 	{
@@ -60,8 +61,10 @@ void DeviceContext::IASetInputLayout(ID3D11InputLayout* pInputLayout)
 }
 
 
-void DeviceContext::VSSetShader(ID3D11VertexShader* pVertexShader, ID3D11ClassInstance* const* ppClassInstances, unsigned int NumClassInstances)
-{
+void 
+DeviceContext::VSSetShader(ID3D11VertexShader* pVertexShader, 
+						   ID3D11ClassInstance* const* ppClassInstances, 
+						   unsigned int NumClassInstances) {
 	// Verifica si el shader de vértices no es nulo; si lo es, muestra un error 
 	// y termina.
 	if (pVertexShader == nullptr)
@@ -77,8 +80,10 @@ void DeviceContext::VSSetShader(ID3D11VertexShader* pVertexShader, ID3D11ClassIn
 }
 
 
-void DeviceContext::PSSetShader(ID3D11PixelShader* pPixelShader, ID3D11ClassInstance* const* ppClassInstances, unsigned int NumClassInstances)
-{
+void 
+DeviceContext::PSSetShader(ID3D11PixelShader* pPixelShader, 
+							ID3D11ClassInstance* const* ppClassInstances, 
+							unsigned int NumClassInstances) {
 	// Verifica si el shader de píxeles no es nulo; si lo es, muestra un 
 	// error y termina.
 	if (pPixelShader == nullptr)
@@ -94,29 +99,39 @@ void DeviceContext::PSSetShader(ID3D11PixelShader* pPixelShader, ID3D11ClassInst
 }
 
 
-void DeviceContext::UpdateSubresource(ID3D11Resource* pDstResource, unsigned int DstSubresource, const D3D11_BOX* pDstBox, const void* pSrcData, unsigned int SrcRowPitch, unsigned int SrcDepthPitch)
-{
+void 
+DeviceContext::UpdateSubresource(ID3D11Resource* pDstResource, 
+							 	 unsigned int DstSubresource, 
+								 const D3D11_BOX* pDstBox, 
+								 const void* pSrcData, 
+								 unsigned int SrcRowPitch, 
+								 unsigned int SrcDepthPitch) {
 	// Copia los datos desde la CPU a la GPU en la ubicación especificada.
 	m_deviceContext->UpdateSubresource(pDstResource, DstSubresource, pDstBox, pSrcData, SrcRowPitch, SrcDepthPitch);
 }
 
 
-void DeviceContext::IASetVertexBuffers(unsigned int StartSlot, unsigned int NumBuffers, ID3D11Buffer* const* ppVertexBuffers, const unsigned int* pStrides, const unsigned int* pOffsets)
-{
+void DeviceContext::IASetVertexBuffers(unsigned int StartSlot, 
+										unsigned int NumBuffers, 
+										ID3D11Buffer* const* ppVertexBuffers, 
+										const unsigned int* pStrides, 
+										const unsigned int* pOffsets) {
 	// Asigna los buffers de vértices al pipeline de entrada.
 	m_deviceContext->IASetVertexBuffers(StartSlot, NumBuffers, ppVertexBuffers, pStrides, pOffsets);
 }
 
 
-void DeviceContext::IASetIndexBuffer(ID3D11Buffer* pIndexBuffer, DXGI_FORMAT Format, unsigned int Offset)
-{
+void DeviceContext::IASetIndexBuffer(ID3D11Buffer* pIndexBuffer, 
+								  	 DXGI_FORMAT Format, 
+									 unsigned int Offset) {
 	// Asigna el buffer de índices al pipeline de entrada.
 	m_deviceContext->IASetIndexBuffer(pIndexBuffer, Format, Offset);
 }
 
 
-void DeviceContext::PSSetSamplers(unsigned int StartSlot, unsigned int NumSamplers, ID3D11SamplerState* const* ppSamplers)
-{
+void DeviceContext::PSSetSamplers(unsigned int StartSlot, 
+								  unsigned int NumSamplers, 
+								  ID3D11SamplerState* const* ppSamplers) {
 	// Verifica si los samplers no son nulos; si lo son, muestra un error.
 	if (ppSamplers == nullptr)
 	{
