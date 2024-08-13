@@ -60,6 +60,9 @@
     <ClCompile Include="source\SampleState.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="source\ModelLoader.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="GodbloxEngine.fx">
@@ -116,6 +119,9 @@
       <Filter>Include</Filter>
     </ClInclude>
     <ClInclude Include="include\SamplerState.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ModelLoader.h">
       <Filter>Include</Filter>
     </ClInclude>
   </ItemGroup>
