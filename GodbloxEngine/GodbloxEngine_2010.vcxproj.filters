@@ -54,6 +54,12 @@
     <ClCompile Include="source\Viewport.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="source\Buffer.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SampleState.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="GodbloxEngine.fx">
@@ -104,6 +110,12 @@
       <Filter>Include</Filter>
     </ClInclude>
     <ClInclude Include="include\Viewport.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Buffer.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SamplerState.h">
       <Filter>Include</Filter>
     </ClInclude>
   </ItemGroup>
